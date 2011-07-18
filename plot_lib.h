@@ -2,6 +2,11 @@
 #define _PLOT_LIB_H
 
 #include "pref.h"
+
+/**
+ * \brief  options for plot
+ * Options for plotting, also the parameternames for the batch file
+ */
 struct myoptions{
 public:
   double startx;
@@ -19,7 +24,10 @@ myoptions() : startx(0),  stopx(200),
 }
 };
 
-
+/**
+ * \brief Plotter class
+ * Plotter class that handels all the plotting an ROOT stuff
+ */
 class Plotter {
  public:
   Plotter();

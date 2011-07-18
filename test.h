@@ -9,9 +9,9 @@
 
 #define VERSION "1.0"
 
-#define ROOT_VERSION "5.30/00"
+#define _ROOT_VERSION "5.30/00"
 
-#define BOOST_VERSION "1.47.0"
+#define _BOOST_VERSION "1.47.0"
 
 namespace bf = boost;
 

@@ -1,15 +1,32 @@
 #include "plot_lib.h"
 
+/**
+ * blank ctor
+ * \return Plotter
+ */
 Plotter::Plotter(){
   init();
-
 }
+
+/**
+ * \brief ctor for to numbervectors
+ *  ctor for Plotter to be initialized with two number vector
+ * \param std::vector<T> _data_x - X Axis data , std::vector<T> _data_y - Y Axis data
+ * \return Plotter
+ */
   template <typename T>
 Plotter::Plotter(std::vector<T> _data_x, std::vector<T> _data_y){
     data_x = _data_x;
     data_y = _data_y;
     init();
 }
+
+/**
+ * \brief ctor to with filename
+ * Reads the filename and processes its data
+ * \param std::vector<std::string> &filenames - filenames to read
+ * \return Plotter
+ */
 Plotter::Plotter(std::vector<std::string> &filenames){
   for(size_t i = 0; i < filenames.size() ; i++){
     std::string file = filenames[i];
@@ -23,18 +40,32 @@ Plotter::Plotter(std::vector<std::string> &filenames){
   init();
 }
 
+/**
+ * \brief Destructor
+ * Destructor and cleanup
+ */
 Plotter::~Plotter(){
    delete graph;
    delete canvas;
 }
 
+/**
+ * \brief Init Plotter class
+ * Inits Plotter class and set canvas
+ * \param none
+ * \return bool un success
+ */
 bool Plotter::init(){
   graph = new TGraph();
   canvas = new TCanvas("plot", "plot", 10, 10 , 1280,720);
   return true;
 }
 
-
+/**
+ * \brief Reads a line from a file and adds the data
+ * Reads a line from a file, replaces , with <TAB>  and casts it as a double
+ * \param std::string line - line to read
+ */
 void Plotter::read_line(std::string line){
   std::string first,sec;
   std::string TR = line.c_str();
@@ -49,7 +80,12 @@ void Plotter::read_line(std::string line){
   }
 }
 
-
+/**
+ * \brief check if a string is a number
+ * checks if the parameter string is a readable double 
+ * \param std::string a - string to check
+ * \return bool true if string is a double
+ */
 bool Plotter::check(std::string a){
   try{
     double d = boost::lexical_cast<double>(a);
@@ -60,6 +96,12 @@ bool Plotter::check(std::string a){
   }
 }
 
+/**
+ * \brief Plots the data
+ * Plots the data in data_x and data_y
+ * \param bool autox , bool autoy actually not needed ;)
+ * \return bool on success
+ */
 bool Plotter::plot(bool autox , bool autoy){
   try{
     for(size_t i = 0; i < data_x.size(); i++){
@@ -85,6 +127,12 @@ bool Plotter::plot(bool autox , bool autoy){
   return true;
 }
 
+/**
+ * \brief saves the plotted image
+ * Saves the plotter image to the given filename
+ * \param std::string filename - output filename for the image also determines the image type ( ".png" -> png etc.)
+ * \return bool on success
+ */
 bool Plotter::save_image(std::string filename){
   try{
     TImage *img = TImage::Create();
@@ -97,6 +145,11 @@ bool Plotter::save_image(std::string filename){
   }
 }
 
+/**
+ * \brief Set options
+ * Sets the options for the plot
+ * \param myoptions opt - options to set
+ */
 void Plotter::set_options(myoptions opt){
   this->opt = opt;
 }

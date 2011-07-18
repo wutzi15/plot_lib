@@ -19,30 +19,51 @@ int main(int argc, char* argv[]){
   po::store(po::parse_command_line(argc,argv,desc),vm);
   po::notify(vm);
 
-
+  /**
+   * Prints help
+   */
   if (vm.count("help")) {
     std::cout << desc<< std::endl;
     return 3;
   }
-  
+
+  /**
+   * Prints version
+   */
   if(vm.count("version")){
-    std::cout << "easyplot Version " << VERSION << "\nusing ROOT Version "<< ROOT_VERSION << "\nusing BOOST Version "
-	      << BOOST_VERSION << "\neverything in it's License (LGPL, GSL & GPL for ROOT and Boost Software License for Boost)"<< "\neasyplot itself is under the GPL" << std::endl;
+    std::cout << "easyplot Version " << VERSION <<
+      "\nusing ROOT Version "<< _ROOT_VERSION <<
+      "\nusing BOOST Version " << _BOOST_VERSION << 
+      "\neverything in it's License (LGPL, GSL & GPL for ROOT and Boost Software License for Boost)"<<
+      "\neasyplot itself is under the LGPL" << std::endl;
     return 4;
   }
 
+
+  /**
+   * Starts interactive mode
+   */
   if(vm.count("interactive")){
    opt= menu();
    found_options++;
   }
+
+  /**
+   * Plots everything into one plot
+   */
   if(vm.count("single")){
     single_mode = true;
     found_options++; 
   }
 
+  /**
+   * \brief Processes a batch file
+   *
+   * brief file syntax:
+   * "name of myoptions parameter" "whitespace" "parameter
+   */
   if(vm.count("batch")){
     std::string bfn = vm["batch"].as<std::string>();
-
     opt = parse_batch(bfn, single_mode);
     found_options += 2;
   }
@@ -53,7 +74,9 @@ int main(int argc, char* argv[]){
     names.push_back(argv[i]);
   }
   
-
+  /**
+   * Single mode
+   */
   if(single_mode){
     for(std::vector<std::string>::iterator i = names.begin();i!=names.end(); i++ ){
       std::string tmp = *i;
@@ -69,7 +92,6 @@ int main(int argc, char* argv[]){
       std::cout <<"plotting: "<< file << std::endl;
       mypl->save_image(file);
       delete mypl;
-     
     }
     return 0;
   }
@@ -89,6 +111,12 @@ int main(int argc, char* argv[]){
 }
 
 
+/**
+ * \brief Prints interactive menu
+ * interactive menu to set plot parameters
+ * \param none
+ * \return myoptions
+ */
 myoptions menu(){
   int choice = 0;
   myoptions tmpopt;
@@ -137,6 +165,14 @@ myoptions menu(){
     return tmpopt;
 }
 
+
+/**
+ * \brief parse batch file
+ * 
+ * Parses batch file to read the plot options and parameter
+ * \param std::string bfn batch file name , bool &single - single_mode bool
+ * \return myoptions
+ */
 myoptions parse_batch(std::string bfn, bool &single){
   std::ifstream in;
   in.open(bfn.c_str());
