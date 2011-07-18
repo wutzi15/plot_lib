@@ -21,3 +21,8 @@ plot_name
 xlabel
 ylabel
 single
+
+TODO:
+
+- maybe add color to the plots
+- error handling!!
