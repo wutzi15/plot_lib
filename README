@@ -1,0 +1,23 @@
+First Version of a program to plot 2D files using Cern's ROOT framework.
+
+Availible options are:
+	 
+--interactive or -i	to show an interactive menu
+--batch or -b [filename]   reads a bathc file to process
+--single or -s 		   plots everything into one plot
+
+usage:
+ep [options] [files]
+
+Batch file syntax:
+every option needs a whitespace after the options name except for single which is activated just by writing single.
+parameters are:
+
+startx
+stopx
+starty
+stopy
+plot_name
+xlabel
+ylabel
+single
