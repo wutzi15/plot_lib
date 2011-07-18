@@ -7,7 +7,6 @@ ROOTLFLAGS =  `root-config --libs`
 .PHONY: plot_lib
 plot_lib:$(OBJ)	
 	$(CC) $(CFLAGS)$(ROOTCFLAGS) $(OPTFL)  -fPIC  -c plot_lib.cpp
-	rm libplot.a
 	ar -cq libplot.a plot_lib.o
 .PHONY: test
 test: 
