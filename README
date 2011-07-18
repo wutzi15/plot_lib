@@ -5,6 +5,8 @@ Availible options are:
 --interactive or -i	to show an interactive menu
 --batch or -b [filename]   reads a bathc file to process
 --single or -s 		   plots everything into one plot
+--help or -h		   shows help
+--version or -v		   prints version
 
 usage:
 ep [options] [files]
