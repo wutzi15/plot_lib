@@ -26,7 +26,8 @@ int main(int argc, char* argv[]){
   }
   
   if(vm.count("version")){
-    std::cout << "easyplot Version " << VERSION << std::endl;
+    std::cout << "easyplot Version " << VERSION << "\nusing ROOT Version "<< ROOT_VERSION << "\nusing BOOST Version "
+	      << BOOST_VERSION << "\neverything in it's License (LGPL, GSL & GPL for ROOT and Boost Software License for Boost)"<< "\neasyplot itself is under the GPL" << std::endl;
     return 4;
   }
 
