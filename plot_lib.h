@@ -18,11 +18,13 @@ public:
   std::string plot_name;
   std::string xlabel;
   std::string ylabel;
+
 myoptions() : startx(0),  stopx(200),
     starty(-300), stopy(0), autox(true),autoy(true), plot_name("plot"),
     xlabel("x"), ylabel("y"){
 }
 };
+
 
 /**
  * \brief Plotter class
@@ -41,7 +43,7 @@ class Plotter {
  private:
   std::vector<double> data_x;
   std::vector<double> data_y;
-  TGraph *graph;
+  std::vector<boost::shared_ptr<TGraph> > graph;
   TCanvas *canvas;
   void read_line(std::string line);
   bool check(std::string a);

@@ -32,6 +32,7 @@
 #include <cmath>
 #include <time.h>
 #include "boost/program_options.hpp"
+#include "boost/shared_ptr.hpp"
 namespace po = boost::program_options;
 
 #endif	

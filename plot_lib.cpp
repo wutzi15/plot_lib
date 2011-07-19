@@ -1,5 +1,6 @@
 #include "plot_lib.h"
 
+
 /**
  * blank ctor
  * \return Plotter
@@ -31,6 +32,9 @@ Plotter::Plotter(std::vector<std::string> &filenames){
   for(size_t i = 0; i < filenames.size() ; i++){
     std::string file = filenames[i];
     std::ifstream in;
+    boost::shared_ptr<TGraph> tmp(new TGraph());
+    //std::shared_ptr<TGraph> tmp ( new TGraph() );
+    graph.push_back(tmp);
     in.open(file.c_str());
     std::string line;
     while(getline(in, line)){
@@ -45,7 +49,8 @@ Plotter::Plotter(std::vector<std::string> &filenames){
  * Destructor and cleanup
  */
 Plotter::~Plotter(){
-   delete graph;
+  //delete graph;
+  graph.clear();
    delete canvas;
 }
 
@@ -56,7 +61,7 @@ Plotter::~Plotter(){
  * \return bool un success
  */
 bool Plotter::init(){
-  graph = new TGraph();
+  //graph = new TGraph();
   canvas = new TCanvas("plot", "plot", 10, 10 , 1280,720);
   return true;
 }
@@ -103,26 +108,29 @@ bool Plotter::check(std::string a){
  * \return bool on success
  */
 bool Plotter::plot(bool autox , bool autoy){
-  try{
-    for(size_t i = 0; i < data_x.size(); i++){
-      graph->SetPoint(i,data_x[i], data_y[i]);
+  for(size_t j = 0 ; j< graph.size(); j++){
+    try{
+      TGraph *gr = graph[j].get();
+      for(size_t i = 0; i < data_x.size(); i++){
+	gr->SetPoint(i,data_x[i], data_y[i]);
+      }
+      
+      if(!opt.autox){
+	
+	gr->GetHistogram()->GetXaxis()->SetRangeUser(opt.startx, opt.stopx);
+      }      
+      if(!opt.autoy){
+	gr->GetHistogram()->GetYaxis()->SetRangeUser(opt.starty, opt.stopy);
+      }
+      gr->SetMarkerSize(0.2);
+      gr->GetHistogram()->SetXTitle(opt.xlabel.c_str());
+      gr->GetHistogram()->SetYTitle(opt.ylabel.c_str());
+      gr->SetTitle(opt.plot_name.c_str());
+      gr->Draw("A*");
+    }catch(std::runtime_error &e){
+      std::cerr << e.what() << std::endl;
+      return false;
     }
-    
-  if(!opt.autox){
-    graph->GetHistogram()->GetXaxis()->SetRangeUser(opt.startx, opt.stopx);
-  }
-  
-  
-  if(!opt.autoy){
-    graph->GetHistogram()->GetYaxis()->SetRangeUser(opt.starty, opt.stopy);
-  }
-  graph->GetHistogram()->SetXTitle(opt.xlabel.c_str());
-  graph->GetHistogram()->SetYTitle(opt.ylabel.c_str());
-  graph->SetTitle(opt.plot_name.c_str());
-  graph->Draw("A*");
-  }catch(std::runtime_error &e){
-    std::cerr << e.what() << std::endl;
-    return false;
   }
   return true;
 }
